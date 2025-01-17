@@ -1,0 +1,118 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: edu-user-config
+  namespace: edu-user
+data:
+  application.yaml: |
+    # Edu User Application Configuration
+    test:
+      users:
+        1:
+          userNo: "1"
+          userName: "User A"
+        2:
+          userNo: "2"
+          userName: "User B"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edu-user-deploy
+  namespace: edu-user
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: edu-user
+  template:
+    metadata:
+      labels:
+        app: edu-user
+    spec:
+      containers:
+      - name: edu-user
+        image: ansungho22/edu-users:v0.0.1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        resources:                           # pod 사용 리소스 설정 블록
+            requests:                          # 생성시 필요한 최소 리소스 
+              cpu: "1"
+              memory: "2Gi"
+            limits:                            # pod가 사용 가능한 최대 리소스 
+              cpu: "1"
+              memory: "2Gi"
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 5
+        livenessProbe: 
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 60 
+          periodSeconds: 5
+      dnsPolicy: ClusterFirst
+      dnsConfig:
+        searches:
+        - edu-goods.namespace.svc.cluster.local
+      restartPolicy: Always
+      imagePullSecrets:                         
+        - name: k8s-edu-dockerhub-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: edu-user-svc
+  namespace: edu-user
+spec:
+  selector:
+    app: edu-user
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: edu-user-ingress
+  namespace: edu-user
+spec:
+  rules:
+  - host: edu-user.172.20.10.5.sslip.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: edu-user-svc
+            port:
+              number: 80
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: edu-user-hpa
+  namespace: edu-user
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: edu-user-deploy
+  minReplicas: 2
+  maxReplicas: 4
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 30
+---
