@@ -22,4 +22,8 @@ public class UsersController {
     public UsersDto getUsers(@PathVariable String usersNo) {
         return usersService.getUserByNo(usersNo);
     }
+    @GetMapping("/")
+    public String healthCheck() {
+        return "ok";
+    }
 }

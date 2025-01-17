@@ -1,0 +1,13 @@
+spring.application.name: demo
+
+app.run.type: default
+
+
+test:
+  users:
+    1:
+      userNo: "1"
+      userName: "User A"
+    2:
+      userNo: "2"
+      userName: "User B"
