@@ -9,10 +9,12 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+
 @Service
 public class UsersService {
     private final UsersProperties usersProperties;
     private final RestTemplate restTemplate;
+
 
     public UsersService(UsersProperties usersProperties, RestTemplateBuilder builder) {
         this.usersProperties = usersProperties;
@@ -20,7 +22,10 @@ public class UsersService {
     }
 
     public UsersDto getUserByNo(String usersNo) {
-        String goodsApiUrl = "http://localhost:8080/api/v1/goods/" + usersNo;
+
+        String goodsApiUrl = "http://edu-goods-svc.edu-goods.svc.cluster.local/api/v1/goods/" + usersNo;
+        //String goodsApiUrl = "http://localhost:8080/api/v1/goods/" + usersNo;
+
         GoodsResponse goodsResponse = restTemplate.getForObject(goodsApiUrl, GoodsResponse.class);
         UsersProperties.Users users = usersProperties.getUsers().get(usersNo);
 

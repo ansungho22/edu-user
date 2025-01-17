@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/users")
+//@RequestMapping("/api/v1/users")
 public class UsersController {
     private final UsersService usersService;
 
@@ -18,7 +18,7 @@ public class UsersController {
         this.usersService = usersService;
     }
 
-    @GetMapping("/{usersNo}")
+    @GetMapping("/api/v1/users/{usersNo}")
     public UsersDto getUsers(@PathVariable String usersNo) {
         return usersService.getUserByNo(usersNo);
     }
