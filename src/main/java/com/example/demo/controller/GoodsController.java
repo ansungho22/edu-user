@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Value;
+
+import java.util.Map;
 
 /**
  * packageName    : com.example.demo.controller
@@ -27,9 +30,16 @@ public class UserRestController {
     @Autowired
     private UserService userService;
 
+
     @GetMapping("/{userNo}")
-    public ResponseEntity<UserDto> getUserByuserNo(@PathVariable String userNo) {
-        UserDto userDto = userService.getUserByuserNo(userNo);
-        return ResponseEntity.ok(userDto);
+    public ResponseEntity<?> getUserByuserNo(@PathVariable int userNo) {
+        Map<String, Object> user = userService.getUserByuserNo(userNo);
+        
+        if (user != null){
+            return ResponseEntity.ok(user);
+        }
+        else {
+            return ResponseEntity.status(404).body("user not found");
+        }
     }
 }

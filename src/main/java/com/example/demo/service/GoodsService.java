@@ -1,8 +1,11 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.UserDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 /**
  * packageName    : com.example.demo.service
@@ -20,16 +23,14 @@ public class UserService {
 
     String appRunType;
 
+    @Value("#{${user-data}}")
+    private Map<Integer, Map<String, Object>> userData;
+
     public UserService(@Value("${app.run.type}") String appRunType) {
         this.appRunType = appRunType;
     }
 
-    public UserDto getUserByuserNo(String userNo) {
-
-        UserDto userDto = UserDto.builder()
-                .userNo(userNo)
-                .userName(appRunType + "-" + userNo)
-                .build();
-        return userDto;
+    public Map<String, Object> getUserByuserNo(int userNo) {
+        return userData.get(userNo);
     }
 }
