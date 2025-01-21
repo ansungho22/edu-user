@@ -50,6 +50,22 @@ spec:
             port: 8080
           initialDelaySeconds: 60 
           periodSeconds: 5
+        env:
+          - name: hostip
+            valueFrom:
+              configMapKeyRef:
+                name: edu-user-config
+                key: hostip
+          - name: username
+            valueFrom:
+              configMapKeyRef:
+                name: edu-user-config
+                key: username
+          - name: password
+            valueFrom:
+              configMapKeyRef:
+                name: edu-user-config
+                key: password
       dnsPolicy: ClusterFirst
 #      dnsConfig:
 #        searches:
