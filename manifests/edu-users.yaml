@@ -4,16 +4,9 @@ metadata:
   name: edu-user-config
   namespace: edu-user
 data:
-  application.yaml: |
-    # Edu User Application Configuration
-    test:
-      users:
-        1:
-          userNo: "1"
-          userName: "User A"
-        2:
-          userNo: "2"
-          userName: "User B"
+  hostip: "test_ip_User"
+  username: "test_username_User"
+  password: "test_password_User"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -32,7 +25,7 @@ spec:
     spec:
       containers:
       - name: edu-user
-        image: ansungho22/edu-users:v0.0.3
+        image: ansungho22/edu-users:v0.0.4
         imagePullPolicy: IfNotPresent
         ports:
         - name: http

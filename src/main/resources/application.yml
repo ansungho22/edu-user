@@ -11,3 +11,9 @@ test:
     2:
       userNo: "2"
       userName: "User B"
+
+spring:
+  datasource:
+    hostip: ${hostip}
+    username: ${username}
+    password: ${password}
