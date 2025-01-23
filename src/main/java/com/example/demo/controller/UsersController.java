@@ -40,4 +40,19 @@ public class UsersController {
         configMap.put("password", dataSourceConfig.getPassword());
         return configMap;
     }
+    @GetMapping("/hpa/{loopCnt}")
+    public String hpaCheck(@PathVariable double loopCnt) {
+        double result = 0;
+        for (int i = 1; i < loopCnt; i++){
+            result = i * Math.random();
+            for (int j = 1; j < loopCnt; j++){
+                result = i * j * Math.random();
+                for (int k = 1; k < loopCnt; k++){
+
+                }
+            }
+
+        }
+        return "hpa ok " + result;
+    }
 }
