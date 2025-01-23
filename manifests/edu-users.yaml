@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
       - name: edu-user
-        image: ansungho22/edu-users:v0.0.4
+        image: ansungho22/edu-users:v0.0.5
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
